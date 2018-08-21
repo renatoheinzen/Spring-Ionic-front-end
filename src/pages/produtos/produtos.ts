@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { ProdutoDTO } from '../../models/produto.dto';
+import { ProdutoService } from '../../services/domain/produto.service';
 
 @IonicPage()
 @Component({
@@ -14,25 +15,18 @@ export class ProdutosPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
+    public produtoService: ProdutoService,
     public loadingCtrl: LoadingController) {
   }
 
   ionViewDidLoad() {
+    let categoriaId = this.navParams.get('categoria_id');
+    this.produtoService.findByCategoria(categoriaId)
+                       .subscribe(response => {
+                         this.items = response['content'];
+                       },
+    error => {});
     
-    this.items = [
-      {
-        id: "1",
-        nome: "Mouse",
-        preco: 28.35
-      },
-      {
-        id: "2",
-        nome: "Teclado",
-        preco: 54.35
-      }
-    ]
   }
-
-  
 
 }
